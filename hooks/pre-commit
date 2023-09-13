@@ -1,0 +1,16 @@
+#!/bin/sh
+
+echo '[git hook] executing maven spotless before commit'
+
+# get the file name in get add  
+OUTPUT="$(git diff --cached --name-only)"
+
+# run the spotless apply
+mvn spotless:apply
+
+# store the last exit code in a variable
+RESULT=$?
+
+$(git add $OUTPUT)
+
+exit $RESULT 

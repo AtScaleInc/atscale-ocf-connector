@@ -1,0 +1,47 @@
+[
+  {
+    "key": "dchost",
+    "value": "${DCHOST}",
+    "type": "TEXT"
+  },
+  {
+    "key": "dcport",
+    "value": "10500",
+    "type": "TEXT"
+  },
+  {
+    "key": "apihost",
+    "value": "${APIHOST}",
+    "type": "TEXT"
+  },
+  {
+    "key": "apiport",
+    "value": "10502",
+    "type": "TEXT"
+  },
+  {
+    "key": "authhost",
+    "value": "${AUTHHOST}",
+    "type": "TEXT"
+  },
+  {
+    "key": "authport",
+    "value": "10500",
+    "type": "TEXT"
+  },
+  {
+    "key": "organization",
+    "value": "default",
+    "type": "TEXT"
+  },
+  {
+    "key": "username",
+    "value": "${USERNAME}",
+    "type": "TEXT"
+  },
+  {
+    "key": "password",
+    "value": "${PASSWORD}",
+    "type": "ENCRYPTEDTEXT"
+  }
+]
