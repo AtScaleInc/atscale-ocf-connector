@@ -267,7 +267,7 @@ public class AtScaleBIDatasource
 
         folderList.forEach(
                 folder -> {
-                    if (folder.getBiObjectType().equalsIgnoreCase("Project")) {
+                    if (folder.getBiObjectType().equalsIgnoreCase("Project") || folder.getBiObjectType().equalsIgnoreCase("Workbook")) {
                         filteredCatalogNames.add(folder.getName());
                     } else if (folder.getBiObjectType().equalsIgnoreCase("Cube")) {
                         filteredCubeNames.add(folder.getName());
