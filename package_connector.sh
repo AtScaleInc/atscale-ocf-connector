@@ -83,6 +83,6 @@ echo " Step 8: Removing temp files..."
 rm -f ${connectorName}.img ${driverName} MANIFEST.MF
 
 echo " Step 9: Renaming zip file..."
-mv ${connectorName}.zip "atscale-alation-connector-1.1.0.zip"
+mv ${connectorName}.zip "atscale-alation-connector-1.1.1.zip"
 
 echo "Packaging module ${MODULE} completed."
