@@ -42,7 +42,7 @@ public class AtScaleBIDatasource
 
     private static final Logger LOGGER = Logger.getLogger(AtScaleBIDatasource.class);
     private final Map<Integer, String> dataTypeVsNameMap = new HashMap<>();
-    private static final String VERSION = "1.1.0";
+    private static final String VERSION = "1.1.1";
     private static final String FOLDER_ID_1 = "folder_id_1";
     private static final String TEST_FOLDER_1 = "Test Folder 1";
 
@@ -267,7 +267,7 @@ public class AtScaleBIDatasource
 
         folderList.forEach(
                 folder -> {
-                    if (folder.getBiObjectType().equalsIgnoreCase("Project")) {
+                    if (folder.getBiObjectType().equalsIgnoreCase("Project") || folder.getBiObjectType().equalsIgnoreCase("Workbook")) {
                         filteredCatalogNames.add(folder.getName());
                     } else if (folder.getBiObjectType().equalsIgnoreCase("Cube")) {
                         filteredCubeNames.add(folder.getName());

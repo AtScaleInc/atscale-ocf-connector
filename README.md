@@ -15,5 +15,5 @@ This project contains the code to create an Alation OCF Connector to AtScale. Us
 1. In IntelliJ, Execute Maven Goal: `mvn clean`
 2. In IntelliJ, Execute Maven Goal: `mvn compile`
 3. In IntelliJ, Execute Maven Goal: `mvn assembly:single`
-4. From the console in the project directory, run `./package_connector.sh -m biconnector -j target/biconnector-1.1.0-jar-with-dependencies.jar -f Dockerfile`
+4. From the console in the project directory, run `./package_connector.sh -m biconnector -j target/biconnector-1.1.1-jar-with-dependencies.jar -f Dockerfile`
 5. If successful, it will produce a file named `atscale-alation-connector-x.x.x.zip`
