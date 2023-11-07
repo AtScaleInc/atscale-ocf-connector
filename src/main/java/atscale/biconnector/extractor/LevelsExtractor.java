@@ -138,7 +138,6 @@ public class LevelsExtractor extends IMetadataExtractor {
                 if (Tools.isEmpty(level.getParentLevelGUID())) {
                     // Level Attribute
                     reportColumn = new ReportColumn(id, level.getLevelCaption(), "Level Attribute");
-                    reportColumn.setDescription(level.getDescription());
                     reportColumn.setRole("Level Attribute");
                     reportColumn.setExpression("Query name: " + level.getLevelUniqueName());
                     reportColumn.setBiObjectType("Level " + level.getLevelNumber());
@@ -185,10 +184,11 @@ public class LevelsExtractor extends IMetadataExtractor {
                                 level.getCubeName(),
                                 associatedLevel.getHierarchyUniqueName()));
                     }
-                    reportColumn.setDescription(level.getDescription());
                     reportColumn.setRole("Secondary Attribute");
                     reportColumn.setExpression("Query name: " + level.getLevelUniqueName());
                 }
+                reportColumn.setDescription(level.getDescription());
+                reportColumn.setValues(Collections.singletonList(level.getDescription()));
 
                 setDatasourceColumnIds(levelsNoConnection, level, reportColumn);
                 reportColumns.add(reportColumn);
