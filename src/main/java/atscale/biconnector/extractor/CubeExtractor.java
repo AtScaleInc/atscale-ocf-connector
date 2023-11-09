@@ -111,8 +111,9 @@ public class CubeExtractor extends IMetadataExtractor {
                         if (parentFolderId != null) {
                             folder.setParentFolderId(parentFolderId);
                         }
+                        String mdxConnectionString = String.format("%s://%s:%s/xmla/%s", configuration.getProtocol(), configuration.getAPIHost(), configuration.getAPIPort(), configuration.getOrganization());
                         folder.setDescription(Tools.coalesce(cube.getDescription(),
-                                "AtScale cube on host: " + configuration.getDCHost()));
+                                "AtScale cube on host: " + configuration.getDCHost() + "\nMDX Connection: "+ mdxConnectionString));
 
                         folders.add(folder);
                         cubeNameVsId.put(cube.getCatalogName() + "~~" + cube.getCubeName(), id);

@@ -84,6 +84,7 @@ public class CatalogExtractor extends IMetadataExtractor {
      */
     @Override
     protected void convertAtScaleObjectToAlation() {
+
         Tools.printHeader("convertAtScaleObjectToAlation - catalog", 1);
         LOGGER.info("Converting Catalogs to Folders");
         catalogs.forEach(
@@ -99,9 +100,12 @@ public class CatalogExtractor extends IMetadataExtractor {
                             folder.setSourceUrl(atScaleServerClient.buildAPIURL("/org/{orgId}/project/{projectId}", catalogObj.getCatalogGUID(), "", "Design Center"));
                         }
 
+
                         folder.setIsExtractable(true);
+                        String mdxConnectionString = String.format("%s://%s:%s/xmla/%s", configuration.getProtocol(), configuration.getAPIHost(), configuration.getAPIPort(), configuration.getOrganization());
                         folder.setDescription(Tools.coalesce(catalogObj.getDescription(),
-                                "AtScale project imported " + catalogObj.getImportDate() + " and last modified " + catalogObj.getLastModified()));
+                                "AtScale project imported " + catalogObj.getImportDate() + " and last modified " + catalogObj.getLastModified() + "\nMDX Connection: "+ mdxConnectionString));
+
                         folders.add(folder);
                         catalogNameVsId.put(catalogObj.getName(), new Pair(id, catalogObj.getCatalogGUID()));
 
