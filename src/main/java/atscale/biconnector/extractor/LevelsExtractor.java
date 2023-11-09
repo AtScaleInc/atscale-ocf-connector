@@ -177,7 +177,7 @@ public class LevelsExtractor extends IMetadataExtractor {
                                 associatedLevel.getHierarchyUniqueName() + ".[" + level.getLevelName() + "]");
                         reportColumn = new ReportColumn(id, level.getLevelCaption(), "Secondary Attribute");
                         reportColumn.setBiObjectType("Secondary of " + associatedLevel.getLevelCaption());
-                        reportColumn.setDataType("Secondary of " + associatedLevel.getLevelCaption()); // Displays as type in table in UI
+                        reportColumn.setDataType("Secondary of " + associatedLevel.getLevelCaption() + " - Level " + associatedLevel.getLevelNumber()); // Displays as type in table in UI
                         reportColumn.setReportId(StringUtils.joinWith(
                                 ".",
                                 level.getCatalogName(),
