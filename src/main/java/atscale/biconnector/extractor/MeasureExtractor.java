@@ -8,6 +8,7 @@ import atscale.biconnector.configuration.AtScaleBIConfiguration;
 import atscale.biconnector.models.Column;
 import atscale.biconnector.models.Dataset;
 import atscale.biconnector.models.Measure;
+import atscale.biconnector.utils.MeasureUtils;
 import atscale.biconnector.utils.Tools;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -155,7 +156,7 @@ public class MeasureExtractor extends IMetadataExtractor {
                                 reportColumn.setBiObjectType("Metrical Attribute");
                             } else {
                                 reportColumn.setRole("Measure");
-                                reportColumn.setExpression("Query name: " + measure1.getMeasureUniqueName());
+                                reportColumn.setExpression(getMeasureExpression(measure1));
                             }
                         }
 
@@ -172,6 +173,19 @@ public class MeasureExtractor extends IMetadataExtractor {
                         LOGGER.error(e.getMessage(), e);
                     }
                 });
+    }
+
+    /**
+     * format the expression for measure.
+     * @param measure1
+     * @return
+     */
+    private static String getMeasureExpression(Measure measure1) {
+        String expression = String.format("%s: %s, %s: %s", "Aggregation", MeasureUtils.getMeasureAggName(measure1.getMeasureAggregator()),  "Query name", measure1.getMeasureUniqueName());
+        if(StringUtils.isNotEmpty(measure1.getDefaultFormatString())){
+            expression = String.format("%s, %s: %s", expression, "Format", MeasureUtils.getFormatWithName(measure1.getDefaultFormatString()));
+        }
+        return expression;
     }
 
     public void extractMeasures(Set<String> catalogNames, AtScaleServerClient atScaleServerClient, AtScaleBIConfiguration configuration, Stream alationStream) throws StreamException {
