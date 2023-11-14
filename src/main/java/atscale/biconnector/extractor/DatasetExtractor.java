@@ -98,6 +98,10 @@ public class DatasetExtractor extends IMetadataExtractor {
                 dataset.setSchema(resultSet.getString("SCHEMA"));
                 dataset.setExpression(resultSet.getString("EXPRESSION"));
                 dataset.setConnection(resultSet.getString("CONNECTION_ID"));
+
+                if(dataset.getSchema().isEmpty()) {
+                    dataset.setSchema(dataset.getDatasetName());
+                }
                 datasets.add(dataset);
             } catch (Exception e) {
                 LOGGER.error("Error while creating Dataset object for row id : " + resultSet.getRow());
