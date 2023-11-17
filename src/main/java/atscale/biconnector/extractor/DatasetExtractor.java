@@ -137,6 +137,12 @@ public class DatasetExtractor extends IMetadataExtractor {
                                 biDatasource.setConnectionIds(connectionIds);
                             }
                             biDatasource.setParentFolderId(ds.getCatalogName());
+                            if (biDatasource.getDescription() == null) {
+                                String expression = ds.getExpression();
+                                if (expression != null) {
+                                    biDatasource.setDescription(expression);
+                                }
+                            }
                             biDatasources.add(biDatasource);
 
                             datasetMap.put(ds.getCatalogName() + "." + ds.getDatasetName(), ds);
