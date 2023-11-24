@@ -15,11 +15,11 @@ import atscale.api.AtScaleServerClient;
 import atscale.biconnector.configuration.AtScaleBIAppConfig;
 import atscale.biconnector.configuration.AtScaleBIConfiguration;
 import atscale.biconnector.exception.ObjectNotFoundException;
+import atscale.biconnector.extractor.*;
 import atscale.biconnector.models.Column;
 import atscale.biconnector.models.ConnectionDetails;
 import atscale.biconnector.models.Dataset;
 import atscale.biconnector.models.Dependency;
-import atscale.biconnector.extractor.*;
 import atscale.biconnector.utils.Constants;
 import atscale.biconnector.utils.ModelUtils;
 import org.apache.log4j.Logger;
@@ -417,6 +417,7 @@ public class AtScaleBIDatasource
                 new CubeExtractor(configuration, catalogExtractor.getCatalogNameVsId());
         cubeExtractor.extractCubes(catalogNames, cubeNames, atScaleServerClient, configuration, stream);
         Map<String, String> cubeNameVsId = cubeExtractor.getCubeNameVsId();
+        Map<String, Set<String>> catalogVsCubeName = cubeExtractor.getCatalogVsCubeName();
 
         // Datasets need model parsing (projectMap) for database which isn't yet populated in DMV
         DatasetExtractor datasetExtractor = new DatasetExtractor(connectionDetailsMap);
@@ -439,6 +440,7 @@ public class AtScaleBIDatasource
                 new LevelsExtractor(cubeNameVsId, datasetMap, foundObjects);
         levelsExtractor.extractLevels(catalogNames, atScaleServerClient, configuration, stream);
         Set<String> ignoreHierarchySet = levelsExtractor.getIgnoreHierarchySet();
+        Map<String, Set<String>> cubeDatasetLevelMeasure = new HashMap<>(levelsExtractor.getCubeDatasetLevel());
 
         // Dimensions need model parsing (projectMap) for list of connections used
         DimensionExtractor dimensionExtractor =
@@ -457,11 +459,16 @@ public class AtScaleBIDatasource
         measureExtractor.setCubeNameVsId(cubeNameVsId);
         measureExtractor.extractMeasures(catalogNames, atScaleServerClient, configuration, stream);
         Map<String, Set<String>> mgToDatasetsMap = measureExtractor.populateMgToDatasetsMap();
+        cubeDatasetLevelMeasure.putAll(measureExtractor.getCubeDatasetMeasure());
 
         // Measure Groups need model parsing (projectMap) for list of connections used
         MeasureGroupExtractor measureGroupExtractor =
                 new MeasureGroupExtractor(cubeNameVsId, mgToDatasetsMap);
         measureGroupExtractor.extractMeasureGroups(catalogNames, atScaleServerClient, configuration, stream);
+
+        // Listing Datasets used by any dim or measure in Cube's Datasource tab.
+        CubeDataSetExtractor cubeDataSetExtractor = new CubeDataSetExtractor(connectionDetailsMap, datasetMap, cubeDatasetLevelMeasure, catalogVsCubeName);
+        cubeDataSetExtractor.createCubeDateSets(stream, catalogNames);
 
         LOGGER.info("Extraction completed.");
     }
