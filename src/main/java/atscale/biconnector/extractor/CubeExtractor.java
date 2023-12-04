@@ -12,6 +12,7 @@ import atscale.biconnector.configuration.AtScaleBIConfiguration;
 
 import static atscale.biconnector.utils.Constants.*;
 
+import atscale.biconnector.utils.Utilities;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.glassfish.pfl.basic.contain.Pair;
@@ -27,6 +28,7 @@ public class CubeExtractor extends IMetadataExtractor {
 
     private final AtScaleBIConfiguration configuration;
     private final Map<String, String> cubeNameVsId = new HashMap<>();
+    private final Map<String, Set<String>> catalogVsCubeName = new HashMap<>();
     private Set<Cube> cubes = new HashSet<>();
     private Set<Folder> folders = new HashSet<>();
     private Set<String> cubeNames = new HashSet<>();
@@ -40,6 +42,10 @@ public class CubeExtractor extends IMetadataExtractor {
 
     public Map<String, String> getCubeNameVsId() {
         return cubeNameVsId;
+    }
+
+    public Map<String, Set<String>> getCatalogVsCubeName() {
+        return catalogVsCubeName;
     }
 
     public String getQuery() {
@@ -117,6 +123,7 @@ public class CubeExtractor extends IMetadataExtractor {
 
                         folders.add(folder);
                         cubeNameVsId.put(cube.getCatalogName() + "~~" + cube.getCubeName(), id);
+                        Utilities.addMultiUniqueValuesToMap(catalogVsCubeName,cube.getCatalogName(), cube.getCubeName());
                     } catch (Exception e) {
                         LOGGER.error(e.getMessage(), e);
                     }

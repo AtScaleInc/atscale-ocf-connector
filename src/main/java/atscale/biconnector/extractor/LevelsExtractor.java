@@ -8,6 +8,7 @@ import atscale.biconnector.configuration.AtScaleBIConfiguration;
 import atscale.biconnector.models.Dataset;
 import atscale.biconnector.models.Level;
 import atscale.biconnector.utils.Tools;
+import atscale.biconnector.utils.Utilities;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -30,7 +31,7 @@ public class LevelsExtractor extends IMetadataExtractor {
     private final Set<String> foundObjects;
     private Set<String> ignoreHierarchySet;
     private Map<String, Set<String>> dimToDatasetsMap;
-
+    Map<String, Set<String>> cubeDatasetLevel =  new HashMap<>();
     public Set<ReportColumn> getReportColumns() {
         return reportColumns;
     }
@@ -51,6 +52,10 @@ public class LevelsExtractor extends IMetadataExtractor {
 
     public Map<String, Set<String>> getDimToDatasetsMap() {
         return dimToDatasetsMap;
+    }
+
+    public Map<String, Set<String>> getCubeDatasetLevel() {
+        return cubeDatasetLevel;
     }
 
     public String getQuery() {
@@ -107,6 +112,9 @@ public class LevelsExtractor extends IMetadataExtractor {
                     LOGGER.warn("Not including level '" + level.getCatalogName()
                             + "." + level.getLevelUniqueName().replace("[", "").replace("]", "")
                             + "' because a parent is invisible or not returned by DMV query");
+                }
+                if (StringUtils.isNotEmpty(level.getDatasetName())) {
+                    Utilities.addMultiUniqueValuesToMap(cubeDatasetLevel, level.getCubeName(),level.getDatasetName());
                 }
             } catch (Exception e) {
                 LOGGER.error("Error while creating Level for row id : " + resultSet.getRow());

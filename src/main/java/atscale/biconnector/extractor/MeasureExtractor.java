@@ -10,6 +10,7 @@ import atscale.biconnector.models.Dataset;
 import atscale.biconnector.models.Measure;
 import atscale.biconnector.utils.MeasureUtils;
 import atscale.biconnector.utils.Tools;
+import atscale.biconnector.utils.Utilities;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -33,6 +34,7 @@ public class MeasureExtractor extends IMetadataExtractor {
     private Map<String, String> cubeNameVsId = new HashMap<>();
     private Map<String, Dataset> datasetMap;
     private Map<String, Column> columnMap;
+    Map<String, Set<String>> cubeDatasetMeasure = new HashMap<>();
 
     public MeasureExtractor(
             Map<Integer, String> dataTypeVsNameMap, Map<String, Dataset> datasetMap,
@@ -44,6 +46,10 @@ public class MeasureExtractor extends IMetadataExtractor {
 
     public void setCubeNameVsId(Map<String, String> cubeNameVsId) {
         this.cubeNameVsId = cubeNameVsId;
+    }
+
+    public Map<String, Set<String>> getCubeDatasetMeasure() {
+        return cubeDatasetMeasure;
     }
 
     public String getQuery() {
@@ -108,6 +114,9 @@ public class MeasureExtractor extends IMetadataExtractor {
                     if (column != null) {
                         measure.setColumnSQL(column.getExpression());
                     }
+                }
+                if (StringUtils.isNotEmpty(measure.getDatasetName())) {
+                    Utilities.addMultiUniqueValuesToMap(cubeDatasetMeasure, measure.getCubeName(), measure.getDatasetName());
                 }
                 measures.add(measure);
             } catch (Exception e) {
